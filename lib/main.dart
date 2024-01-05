@@ -4,7 +4,6 @@ import 'package:flutter_ecatalog/bloc/login/login_bloc.dart';
 import 'package:flutter_ecatalog/bloc/register/register_bloc.dart';
 import 'package:flutter_ecatalog/data/datasources/auth_datasources.dart';
 import 'package:flutter_ecatalog/presentation/login_page.dart';
-import 'package:flutter_ecatalog/presentation/register_page.dart';
 
 void main() {
   runApp(const MyApp());
