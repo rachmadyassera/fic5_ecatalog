@@ -2,21 +2,24 @@
 import 'dart:convert';
 
 class LoginRequestModel {
-  final String username;
+  final String email;
   final String password;
 
-  LoginRequestModel({required this.username, required this.password});
+  LoginRequestModel({
+    required this.email,
+    required this.password,
+  });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'username': username,
+      'email': email,
       'password': password,
     };
   }
 
   factory LoginRequestModel.fromMap(Map<String, dynamic> map) {
     return LoginRequestModel(
-      username: map['username'] as String,
+      email: map['email'] as String,
       password: map['password'] as String,
     );
   }

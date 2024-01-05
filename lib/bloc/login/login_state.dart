@@ -8,9 +8,9 @@ final class LoginInitial extends LoginState {}
 final class LoginLoading extends LoginState {}
 
 final class LoginLoaded extends LoginState {
-  // final RegisterResponseModel model;
+  final LoginResponseModel model;
 
-  // LoginLoaded({required this.model});
+  LoginLoaded({required this.model});
 }
 
 final class LoginError extends LoginState {
