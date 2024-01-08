@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                         builder: (context) {
                           return AlertDialog(
                             title: Text(
-                                'Update Product ID : ${state.data[index].id}'),
+                                'Update Product ID : ${state.data.reversed.toList()[index].id}'),
                             content: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
