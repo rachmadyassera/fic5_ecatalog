@@ -18,8 +18,14 @@ class UpdateProductBloc extends Bloc<UpdateProductEvent, UpdateProductState> {
       emit(UpdateProductLoading());
       final result =
           await dataSource.updateProduct(event.model, event.productId);
-      result.fold((l) => emit(UpdateProductError(message: l)),
-          (r) => emit(UpdateProductLoaded(model: r)));
+      result.fold(
+        (l) => emit(
+          UpdateProductError(message: l),
+        ),
+        (r) => emit(
+          UpdateProductLoaded(model: r),
+        ),
+      );
     });
   }
 }
