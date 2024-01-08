@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_ecatalog/bloc/add_product/add_product_bloc.dart';
 import 'package:flutter_ecatalog/bloc/products/products_bloc.dart';
+import 'package:flutter_ecatalog/bloc/update_product/update_product_bloc.dart';
 import 'package:flutter_ecatalog/data/datasources/local_datasources.dart';
 import 'package:flutter_ecatalog/data/request/product_request_model.dart';
+import 'package:flutter_ecatalog/data/request/update_product_request_model.dart';
 import 'package:flutter_ecatalog/presentation/login_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -113,12 +115,14 @@ class _HomePageState extends State<HomePage> {
                               const SizedBox(
                                 width: 8,
                               ),
-                              BlocConsumer<AddProductBloc, AddProductState>(
+                              BlocConsumer<UpdateProductBloc,
+                                  UpdateProductState>(
                                 listener: (context, state) {
-                                  if (state is AddProductLoaded) {
+                                  if (state is UpdateProductLoaded) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
-                                        content: Text('Add Product Success'),
+                                        content:
+                                            Text(' Product has been Updated'),
                                       ),
                                     );
                                     context
@@ -129,34 +133,36 @@ class _HomePageState extends State<HomePage> {
                                     descriptionController!.clear();
                                     Navigator.pop(context);
                                   }
-                                  if (state is AddProductError) {
+                                  if (state is UpdateProductError) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
-                                            'Add Product ${state.message}'),
+                                            'Update Product ${state.message}'),
                                       ),
                                     );
                                   }
                                 },
                                 builder: (context, state) {
-                                  if (state is AddProductLoading) {
+                                  if (state is UpdateProductLoading) {
                                     return const Center(
                                       child: CircularProgressIndicator(),
                                     );
                                   }
                                   return ElevatedButton(
                                       onPressed: () {
-                                        final model = ProductRequestModel(
+                                        final model = UpdateProductRequestModel(
                                             title: titleController!.text,
                                             price: int.parse(
                                                 priceController!.text),
                                             description:
                                                 descriptionController!.text);
 
-                                        context.read<AddProductBloc>().add(
-                                            DoAddProductEvent(model: model));
+                                        context.read<UpdateProductBloc>().add(
+                                            DoUpdateProductEvent(
+                                                model: model,
+                                                productId: productId));
                                       },
-                                      child: const Text('Add'));
+                                      child: const Text('Update'));
                                 },
                               ),
                             ],
