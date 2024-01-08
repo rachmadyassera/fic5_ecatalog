@@ -14,6 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late int productId;
   TextEditingController? titleController;
   TextEditingController? priceController;
   TextEditingController? descriptionController;
@@ -65,7 +66,104 @@ class _HomePageState extends State<HomePage> {
                   child: ListTile(
                     title:
                         Text(state.data.reversed.toList()[index].title ?? '-'),
-                    subtitle: Text('${state.data[index].price} \$'),
+                    subtitle: Text(
+                        '${state.data.reversed.toList()[index].price} \$ - id : ${state.data.reversed.toList()[index].id}'),
+                    onTap: () {
+                      titleController!.text =
+                          state.data.reversed.toList()[index].title!;
+                      priceController!.text =
+                          state.data.reversed.toList()[index].price!.toString();
+                      descriptionController!.text =
+                          state.data.reversed.toList()[index].description!;
+                      productId = state.data.reversed.toList()[index].id!;
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text(
+                                'Update Product ID : ${state.data[index].id}'),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                TextField(
+                                  controller: titleController,
+                                  decoration:
+                                      InputDecoration(labelText: 'Title'),
+                                ),
+                                TextField(
+                                  controller: priceController,
+                                  decoration:
+                                      InputDecoration(labelText: 'Price'),
+                                ),
+                                TextField(
+                                  controller: descriptionController,
+                                  decoration:
+                                      InputDecoration(labelText: 'Description'),
+                                  maxLines: 3,
+                                )
+                              ],
+                            ),
+                            actions: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Cancel'),
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              BlocConsumer<AddProductBloc, AddProductState>(
+                                listener: (context, state) {
+                                  if (state is AddProductLoaded) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Add Product Success'),
+                                      ),
+                                    );
+                                    context
+                                        .read<ProductsBloc>()
+                                        .add(GetProductsEvent());
+                                    titleController!.clear();
+                                    priceController!.clear();
+                                    descriptionController!.clear();
+                                    Navigator.pop(context);
+                                  }
+                                  if (state is AddProductError) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                            'Add Product ${state.message}'),
+                                      ),
+                                    );
+                                  }
+                                },
+                                builder: (context, state) {
+                                  if (state is AddProductLoading) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                  return ElevatedButton(
+                                      onPressed: () {
+                                        final model = ProductRequestModel(
+                                            title: titleController!.text,
+                                            price: int.parse(
+                                                priceController!.text),
+                                            description:
+                                                descriptionController!.text);
+
+                                        context.read<AddProductBloc>().add(
+                                            DoAddProductEvent(model: model));
+                                      },
+                                      child: const Text('Add'));
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
                   ),
                 ),
               );
@@ -82,6 +180,10 @@ class _HomePageState extends State<HomePage> {
           showDialog(
               context: context,
               builder: (context) {
+                
+              titleController!.clear();
+              priceController!.clear();
+              descriptionController!.clear();
                 return AlertDialog(
                   title: const Text('Add Product'),
                   content: Column(
@@ -156,7 +258,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 );
-              });
+            },
+          );
         },
         child: const Icon(Icons.add),
       ),
