@@ -21,6 +21,8 @@ class _HomePageState extends State<HomePage> {
   TextEditingController? priceController;
   TextEditingController? descriptionController;
 
+  final scrollController = ScrollController();
+
   @override
   void initState() {
     titleController = TextEditingController();
@@ -28,6 +30,12 @@ class _HomePageState extends State<HomePage> {
     descriptionController = TextEditingController();
     super.initState();
     context.read<ProductsBloc>().add(GetProductsEvent());
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent ==
+          scrollController.offset) {
+        context.read<ProductsBloc>().add(NextProductsEvent());
+      }
+    });
   }
 
   @override
@@ -60,30 +68,43 @@ class _HomePageState extends State<HomePage> {
       ),
       body: BlocBuilder<ProductsBloc, ProductsState>(builder: (context, state) {
         if (state is ProductsLoaded) {
+          debugPrint('totaldata : ${state.data.length}');
           return ListView.builder(
+            controller: scrollController,
             itemBuilder: (context, index) {
+              if (index == state.data.length) {
+                return const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Card(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                );
+              }
+
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Card(
                   child: ListTile(
                     title:
-                        Text(state.data.reversed.toList()[index].title ?? '-'),
+                        Text(state.data[index].title ?? '-'),
                     subtitle: Text(
-                        '${state.data.reversed.toList()[index].price} \$ - id : ${state.data.reversed.toList()[index].id}'),
+                        '${state.data[index].price} \$ - id : ${state.data[index].id}'),
                     onTap: () {
                       titleController!.text =
-                          state.data.reversed.toList()[index].title!;
+                          state.data[index].title!;
                       priceController!.text =
-                          state.data.reversed.toList()[index].price!.toString();
+                          state.data[index].price!.toString();
                       descriptionController!.text =
-                          state.data.reversed.toList()[index].description!;
-                      productId = state.data.reversed.toList()[index].id!;
+                          state.data[index].description!;
+                      productId = state.data[index].id!;
                       showDialog(
                         context: context,
                         builder: (context) {
                           return AlertDialog(
                             title: Text(
-                                'Update Product ID : ${state.data.reversed.toList()[index].id}'),
+                                'Update Product ID : ${state.data[index].id}'),
                             content: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -174,7 +195,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
             },
-            itemCount: state.data.length,
+            itemCount: state.data.length + 1,
           );
         }
         return const Center(
