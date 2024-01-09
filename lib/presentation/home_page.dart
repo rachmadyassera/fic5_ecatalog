@@ -91,6 +91,10 @@ class _HomePageState extends State<HomePage> {
                         Text(state.data[index].title ?? '-'),
                     subtitle: Text(
                         '${state.data[index].price} \$ - id : ${state.data[index].id}'),
+                    //      title:
+                    //     Text(state.data.reversed.toList()[index].title ?? '-'),
+                    // subtitle: Text(
+                    //     '${state.data.reversed.toList()[index].price} \$ - id : ${state.data.reversed.toList()[index].id}'),
                     onTap: () {
                       titleController!.text =
                           state.data[index].title!;
