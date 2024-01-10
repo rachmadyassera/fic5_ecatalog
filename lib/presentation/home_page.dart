@@ -69,10 +69,12 @@ class _HomePageState extends State<HomePage> {
       body: BlocBuilder<ProductsBloc, ProductsState>(builder: (context, state) {
         if (state is ProductsLoaded) {
           debugPrint('totaldata : ${state.data.length}');
+          debugPrint('totaldatastatus : ${state.isNext}'); 
+          
           return ListView.builder(
             controller: scrollController,
             itemBuilder: (context, index) {
-              if (index == state.data.length) {
+              if (state.isNext && index == state.data.length) {
                 return const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Card(
@@ -199,7 +201,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
             },
-            itemCount: state.data.length + 1,
+            itemCount: state.isNext ? state.data.length + 1 : state.data.length,
           );
         }
         return const Center(

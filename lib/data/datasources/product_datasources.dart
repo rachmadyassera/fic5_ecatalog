@@ -15,7 +15,7 @@ class ProductDataSources {
 
     if (response.statusCode == 200) {
       return Right(
-        List.from(
+        List<ProductResponseModel>.from(
           jsonDecode(response.body).map(
             (x) => ProductResponseModel.fromMap(x),
           ),
@@ -65,10 +65,10 @@ class ProductDataSources {
     final response = await http.get(Uri.parse(
         'https://api.escuelajs.co/api/v1/products/?offset=$offset&limit=$limit'));
 // https://api.escuelajs.co/api/v1/products/?offset=0&limit=10
-
+  
     if (response.statusCode == 200) {
       return Right(
-        List.from(
+        List<ProductResponseModel>.from(
           jsonDecode(response.body).map(
             (x) => ProductResponseModel.fromMap(x),
           ),
