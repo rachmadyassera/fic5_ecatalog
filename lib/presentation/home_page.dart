@@ -117,17 +117,25 @@ class _HomePageState extends State<HomePage> {
                                 TextField(
                                   controller: titleController,
                                   decoration:
-                                      InputDecoration(labelText: 'Title'),
+                                      InputDecoration(
+                                    labelText: 'Title',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                    
                                 ),
                                 TextField(
                                   controller: priceController,
                                   decoration:
-                                      InputDecoration(labelText: 'Price'),
+                                      InputDecoration(
+                                      labelText: 'Price',
+                                      border: OutlineInputBorder()),
                                 ),
                                 TextField(
                                   controller: descriptionController,
                                   decoration:
-                                      InputDecoration(labelText: 'Description'),
+                                      InputDecoration(
+                                      labelText: 'Description',
+                                      border: OutlineInputBorder()),
                                   maxLines: 3,
                                 )
                               ],
@@ -224,15 +232,19 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       TextField(
                         controller: titleController,
-                        decoration: InputDecoration(labelText: 'Title'),
+                      decoration: InputDecoration(
+                          labelText: 'Title', border: OutlineInputBorder()),
                       ),
                       TextField(
                         controller: priceController,
-                        decoration: InputDecoration(labelText: 'Price'),
+                      decoration: InputDecoration(
+                          labelText: 'Price', border: OutlineInputBorder()),
                       ),
                       TextField(
                         controller: descriptionController,
-                        decoration: InputDecoration(labelText: 'Description'),
+                      decoration: InputDecoration(
+                          labelText: 'Description',
+                          border: OutlineInputBorder()),
                         maxLines: 3,
                       )
                     ],
