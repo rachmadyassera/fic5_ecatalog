@@ -203,7 +203,7 @@ class _HomePageState extends State<HomePage> {
                                                   description:
                                                       descriptionController!
                                                           .text);
-
+                            
                                           context.read<UpdateProductBloc>().add(
                                               DoUpdateProductEvent(
                                                   model: model,
